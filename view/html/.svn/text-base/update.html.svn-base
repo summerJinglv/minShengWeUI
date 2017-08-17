@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>办卡送现金</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <link rel="stylesheet" type="text/css" href="../../css/weui.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/jquery-weui.css">
+  <link rel="stylesheet" type="text/css" href="../../css/mySelf.css">
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+  <h1 class="mui-title">办卡送现金</h1>
+</header>
+<section class="c_body">
+  <div class="update-box">
+    <img src="../../images/update_bg.jpg">
+    <p class="fs-18 text-blue text-center">小卡卡正在升级中哦......</p>
+  </div>
+</section>
+</body>
+</html>

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>首页</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <link rel="stylesheet" type="text/css" href="../../css/weui.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/jquery-weui.css">
+  <link rel="stylesheet" type="text/css" href="../../css/mySelf.css?time=201708121700">
+  <style>
+    html,body{position:relative;height:100%;}
+    body{background-color:#efefef;}
+    .swiper-container{width:100%;height:100%;}
+    .swiper-wrapper{height:100%; }
+    .swiper-slide{height:100%;}
+    .scrollbar-page2 .swiper-slide{height:auto;}
+  </style>
+</head>
+<body>
+<header class="mui-bar mui-bar-nav">
+  <span class="bar-left fl">民生办卡送现金</span>
+  <div class="bar-right fr">
+    <!--<a href="javascript:;" onclick="openPage('/view/html/applySuccess.html?result=')">合伙人</a>&nbsp;|&nbsp;<a href="javascript:;" onclick="openPage('/view/html/myReward.html')">奖励金</a>-->
+    <a href="javascript:;" onclick="openPage('/view/html/partner.html')">合伙人</a><span id="text">&nbsp;|&nbsp;</span><a id="tx" href="javascript:;" onclick="openPage('/view/html/myReward.html')">奖励金</a>
+  </div>
+</header>
+<section class="c_body">
+  <div class="swiper-container swiper-container-v">
+    <div class="swiper-wrapper">
+    <div class="swiper-slide bannerPage">
+      <div class="index-logo" >
+      	<img src="../../images/minsheng_logo.png" alt="民生银行">
+      </div>
+      <img class="iB-title-img zoomIn" src="../../images/index-banner_title.png">
+      <div class="index-notice">
+        <img class="iB-text-img" src="../../images/bg_title.png">
+        <dl class=" slideInLeft">
+          <dt>活动介绍</dt>
+          <dd>1.申请办卡即可成为“信用合伙人”；</dd>
+          <dd>2.合伙人推广新用户成功办卡，获得<span id="CARD_AUDIT_PASS_TG_MONEY"></span>元奖励，用户获得<span id="CARD_AUDIT_PASS_MONEY"></span>元奖励；</dd>
+          <dd>3.用户成功激活卡片，合伙人获得<span id="CARD_ACTIVATE_TG_MONEY"></span>元奖励，用户获得<span id="CARD_ACTIVATE_MONEY"></span>元奖励；</dd>
+          <dd>4.推广人数和奖励金可累加，无上限。</dd>
+        </dl>
+      </div>
+      <div class="arrow-btn">
+        <div class="btn">办卡领现金</div>
+        <div class="arrow-icon"></div>
+      </div>
+    </div>
+    <div class="swiper-slide">
+      <div class="swiper-container swiper-container-scrollbar scrollbar-page2">
+        <div class="swiper-wrapper">
+          <div class="swiper-slide">
+            <div class="weui-cells__title bg-m-grey">申请信息</div>
+            <div class="weui-cells weui-cells_form" style="margin-top:0;overflow:visible">
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">姓名</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" maxlength="5" id="name1"  placeholder="请输入您的姓名">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">姓名拼音</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" id="py1" placeholder="姓名拼音" style="text-transform:uppercase;" >
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">身份证</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" maxlength="18" id="sfz1" placeholder="请输入您的身份证号码">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">发证机关</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" id="id_card_certify" type="text" placeholder="请选择发证机关">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">证件有效期起</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" id="active_time_start" type="date" placeholder="请选择起始日期" style="overflow:hidden;display: block;">
+                </div>
+              </div>
+              <div class="weui-cell weui-cells_checkbox">
+                <div class="weui-cell__hd"><label class="weui-label">证件有效期至</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" id="active_time_end" type="date" placeholder="请选择终止日期" style="overflow:hidden;display: block;width:66%">
+                </div>
+                <div class="weui-cell__ft long-term">
+                  <label class="weui-cell weui-check__label pad0" id="longLabel">
+                    <div class="weui-cell__hd">
+                      <input type="checkbox" class="weui-check"  name="long_term" id="long_term">
+                      <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                      <p class="long-term-text">长期有效</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">联系手机</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="tel" maxlength="11" placeholder="请输入11位手机号" id="phoneNum1" oninput="replaceNotNumber(this)">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">电子邮箱</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="email" id="mail1" placeholder="请提供电子账单发送的邮箱地址">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">住宅所在城市</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" id="js_content_xzcs" type="text" placeholder="请选择所在城市">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">详细地址</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" maxlength="30" id="detail" placeholder="请填写住宅详细地址，不少于8个字">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">邮政编码</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" maxlength="6" oninput="replaceNotNumber(this)" id="hPostCode" placeholder="请填写住宅邮政编码">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">住宅电话</label></div>
+                <div class="weui-cell__bd cell-tel" style="display:flex">
+                  <input class="weui-input" type="tel" oninput="replaceNotNumber(this)" maxlength="4" id="hDisNum" placeholder="区号">
+                  <div>-</div>
+                  <input class="weui-input" type="tel" oninput="replaceNotNumber(this)" maxlength="8" id="hPhone" placeholder="电话号码">
+                  <input class="weui-input text-right"  type="text" placeholder="（选填）" readonly>
+                </div>
+              </div>
+              <div class="weui-cell weui-cells_checkbox">
+                <div class="weui-cell__hd"><label class="weui-label">婚姻状况</label></div>
+                <div class="weui-cell__bd inline-cell">
+                  <label class="weui-cell weui-check__label">
+                    <div class="weui-cell__hd">
+                      <input type="radio" name="isMarried" class="weui-check"  value="S">
+                      <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                      <p>未婚</p>
+                    </div>
+                  </label>
+                  <label class="weui-cell weui-check__label" >
+                    <div class="weui-cell__hd">
+                      <input type="radio" name="isMarried" class="weui-check" value="M">
+                      <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                      <p>已婚</p>
+                    </div>
+                  </label>
+                  <label class="weui-cell weui-check__label">
+                    <div class="weui-cell__hd">
+                      <input type="radio" name="isMarried" class="weui-check" value="O">
+                      <i class="weui-icon-checked"></i>
+                    </div>
+                    <div class="weui-cell__bd">
+                      <p>其他</p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+              <div class="weui-cell weui-cell_select weui-cell_select-after">
+                <div class="weui-cell__hd">
+                  <label for="education" class="weui-label">教育程度</label>
+                </div>
+                <div class="weui-cell__bd">
+                  <select class="weui-select" name="education" id="education">
+                    <option value="-1">请选择教育程度</option>
+                    <option value="6">博士及以上</option>
+                    <option value="5">硕士</option>
+                    <option value="4">本科</option>
+                    <option value="3">大专</option>
+                    <option value="2">高中/中专</option>
+                    <option value="1">初中及以下</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title bg-m-grey">工作信息</div>
+            <div class="weui-cells weui-cells_form">
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">单位名称</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" maxlength="30" id="companyName"  placeholder="请填写单位名称">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">单位所在城市</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" id="comAddr1" type="text" placeholder="请选择所在城市">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">单位详细地址</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="text" maxlength="30" id="comDetail" placeholder="请输入单位详细地址，不少于8个字">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">单位电话</label></div>
+                <div class="weui-cell__bd cell-tel">
+                  <input class="weui-input" type="tel" oninput="replaceNotNumber(this)" maxlength="4" id="cDisNum" placeholder="区号">
+                  <div>-</div>
+                  <input class="weui-input" type="tel" oninput="replaceNotNumber(this)" maxlength="8" id="telNum" placeholder="电话号码">
+                  <div>-</div>
+                  <input class="weui-input" type="tel" oninput="replaceNotNumber(this)" maxlength="4" id="extNum" placeholder="分机号">
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">工作年限</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input percent30" type="tel" oninput="replaceNotNumber(this)" placeholder="工作年限" maxlength="2" id="workLife">
+                  <span>年</span>
+                </div>
+              </div>
+              <div class="weui-cell">
+                <div class="weui-cell__hd"><label class="weui-label">邮政编码</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input" type="tel" oninput="replaceNotNumber(this)" id="cPostCode" maxlength="6" placeholder="请填写单位邮政编码">
+                </div>
+              </div>
+            </div>
+            <div class="weui-cells__title bg-m-grey">联系信息</div>
+            <div class="weui-cells weui-cells_form">
+              <div class="weui-cell cell-relation">
+                <div class="weui-cell__hd"><label class="weui-label">直系亲属</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input input-name" type="text" id="relativeName"  placeholder="姓名">
+                  <select class="weui-select" id="relation">
+                    <option value="-1">关系</option>
+                    <option value="父母">父母</option>
+                    <option value="配偶">配偶</option>
+                    <option value="子女">子女</option>
+                    <option value="其他">其他</option>
+                  </select>
+                  <input class="weui-input input-phone" id="relPhoneNum" maxlength="11" type="text" placeholder="手机号码">
+                </div>
+              </div>
+              <div class="weui-cell cell-relation">
+                <div class="weui-cell__hd"><label class="weui-label">其他联系人</label></div>
+                <div class="weui-cell__bd">
+                  <input class="weui-input input-name" type="text" id="oPerson" placeholder="姓名">
+                  <select class="weui-select" id="oRelation">
+                    <option value="-1">关系</option>
+                    <option value="朋友">朋友</option>
+                    <option value="同学">同学</option>
+                    <option value="同事">同事</option>
+                    <option value="其他">其他</option>
+                  </select>
+                  <input class="weui-input input-phone" id="oPhoneNum" maxlength="11" type="text" placeholder="手机号码">
+                </div>
+              </div>
+              <div class="weui-cells__title bg-m-grey">更多信息（选填）</div>
+              <div class="weui-cells weui-cells_form">
+                <div class="weui-cell">
+                  <div class="weui-cell__hd"><label class="weui-label">车牌号码</label></div>
+                  <div class="weui-cell__bd  cell-car">
+                    <select class="weui-select" id="carNumCity">
+                      <option value="-1">请选择</option>
+                      <option value="京">京</option>
+                      <option value="津">津</option>
+                      <option value="冀">冀</option>
+                      <option value="晋">晋</option>
+                      <option value="蒙">蒙</option>
+                      <option value="辽">辽</option>
+                      <option value="吉">吉</option>
+                      <option value="黑">黑</option>
+                      <option value="沪">沪</option>
+                      <option value="苏">苏</option>
+                      <option value="浙">浙</option>
+                      <option value="皖">皖</option>
+                      <option value="闽">闽</option>
+                      <option value="竷">赣</option>
+                      <option value="鲁">鲁</option>
+                      <option value="豫">豫</option>
+                      <option value="鄂">鄂</option>
+                      <option value="湘">湘</option>
+                      <option value="粤">粤</option>
+                      <option value="桂">桂</option>
+                      <option value="琼">琼</option>
+                      <option value="渝">渝</option>
+                      <option value="川">川</option>
+                      <option value="贵">贵</option>
+                      <option value="云">云</option>
+                      <option value="新">新</option>
+                      <option value="甘">甘</option>
+                      <option value="陕">陕</option>
+                      <option value="青">青</option>
+                      <option value="藏">藏</option>
+                      <option value="宁">宁</option>
+                    </select>
+                    <select class="weui-select" id="carNumFlag">
+                      <option value="-1">请选择</option>
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                      <option value="D">D</option>
+                      <option value="E">E</option>
+                      <option value="F">F</option>
+                      <option value="G">G</option>
+                      <option value="H">H</option>
+                      <option value="I">I</option>
+                      <option value="J">J</option>
+                      <option value="K">K</option>
+                      <option value="L">L</option>
+                      <option value="M">M</option>
+                      <option value="N">N</option>
+                      <option value="O">O</option>
+                      <option value="P">P</option>
+                      <option value="Q">Q</option>
+                      <option value="R">R</option>
+                      <option value="S">S</option>
+                      <option value="T">T</option>
+                      <option value="U">U</option>
+                      <option value="V">V</option>
+                      <option value="W">W</option>
+                      <option value="X">X</option>
+                      <option value="Y">Y</option>
+                      <option value="Z">Z</option>
+                    </select>
+                    <input class="weui-input" type="text"  maxlength="5"  id="carNum" placeholder="车牌号码">
+                  </div>
+                </div>
+                <div class="weui-cell">
+                  <div class="weui-cell__hd"><label class="weui-label">常用QQ号</label></div>
+                  <div class="weui-cell__bd">
+                    <input class="weui-input" type="tel" id="QQNum" maxlength="11" placeholder="常用QQ号">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="weui-btn-area ptb10">
+              <a href="javascript:;" class="weui-btn weui-btn_primary " id="submitApply">提交申请</a>
+            </div>
+          </div>
+        </div>
+        <div class="swiper-scrollbar"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+<script src="../../js/jquery-2.1.4.js"></script>
+<script src="../../js/weui/jquery-weui.min.js"></script>
+<script src="../../js/weui/city-picker.min.js"></script>
+<script src="../../js/weui/swiper.min.js"></script>
+<script src="../../js/mySelf/myCommon.js"></script>
+<script src="../../js/mySelf/index.js"></script>
+</body>
+</html>

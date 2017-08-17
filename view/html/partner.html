@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="page-html">
+<head>
+  <meta charset="utf-8">
+  <title>合伙人</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <link rel="stylesheet" type="text/css" href="../../css/weui.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/jquery-weui.css">
+  <link rel="stylesheet" type="text/css" href="../../css/mySelf.css">
+</head>
+<body>
+  <header class="mui-bar mui-bar-nav">
+    <span class="mui-icon mui-icon-left-nav mui-pull-left" onclick="history.go(-1);"></span>
+    <h1 class="mui-title">合伙人</h1>
+    <div class="bar-right fr open-popup" data-target="#rule">
+		<a href="javascript:;">推广规则</a>
+	</div>
+  </header>
+  <section class="c_body">
+    <img id="pic" src="" style="width:100%">
+  </section>
+  <div id="rule" class="weui-popup__container close-popup">
+    <div class="weui-popup__overlay"></div>
+    <div class="weui-popup__modal pic-pop-modal">
+        <dl class="rule-list">
+          <dt>推广规则</dt>
+          <dd>1.好友通过该二维码链接提交申请，成功通过银行审核，您将获得<span id="CARD_AUDIT_PASS_TG_MONEY"></span>元奖励；</dd>
+          <dd>2.好友成功激活卡片，您将额外获得<span id="CARD_ACTIVATE_TG_MONEY"></span>元奖励；</dd>
+          <dd>3.邀请多个好友，奖励可累加，无上限；</dd>
+          <dd>4.该活动仅限未持卡新用户参加。</dd>
+        </dl>
+    </div>
+  </div>
+  <script src="../../js/jquery-2.1.4.js"></script>
+  <script src="../../js/weui/jquery-weui.min.js"></script>
+  <script src="../../js/mySelf/myCommon.js"></script>
+  <script>
+   	$.ajax({
+   	  url: ctx+"/card/getConfig",
+   	  type: "get",
+   	  success: function(data){
+   	    if(data.opcode==0){
+   	      var res=data.result;
+   	   		$("#CARD_AUDIT_PASS_TG_MONEY").html(res.CARD_AUDIT_PASS_TG_MONEY);
+   			$("#CARD_ACTIVATE_TG_MONEY").html(res.CARD_ACTIVATE_TG_MONEY);
+   	    }else{
+   	      $.toast(data.reason,"text");
+   	    }
+   	  }
+   	});
+    $.ajax({
+      url: ctx+"/card/getQrCode?rowId="+uid,
+      type: "post",
+      success: function(data){
+        console.log(data);
+        if(data.opcode==0){
+          var res=data.result.cardUserBaseInfo;
+          var url = "http://7sbmvz.com1.z0.glb.clouddn.com"+res.tgQrPicUrl;
+          //sessionStorage.setItem("tg_img", res.tgQrPicUrl);
+          $("#pic").attr("src",url);
+        }else{
+          $.toast(data.reason,"text");
+        }
+      }
+    });
+    $.ajax({
+    	  url: ctx+"/card/user/getUserInfo/"+uid,
+    	  type: "post",
+    	  success: function(data){
+    	    console.log(data);
+    	    if(data.opcode==0){
+    	      var res=data.result;
+    	      if(res.isEnable!=0){
+    	        $.modal({
+    	          title: "风控提示",
+    	          text: '<p class="mb10">风控系统检测到您的账户存在高危风险，已被冻结！</p>',
+    	          buttons: [],
+    	          autoClose: false
+    	        });
+    	      }
+    	    }else{
+    	      $.toast(data.reason,"text");
+    	    }
+    	  }
+    	});
+  </script>
+</body>
+</html>

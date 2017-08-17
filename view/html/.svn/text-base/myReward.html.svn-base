@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html class="page-html">
+<head>
+  <meta charset="utf-8">
+  <title>我的奖励</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <link rel="stylesheet" type="text/css" href="../../css/weui.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/jquery-weui.css">
+  <link rel="stylesheet" type="text/css" href="../../css/mySelf.css">
+</head>
+<body>
+  <header class="mui-bar mui-bar-nav">
+    <span class="mui-icon mui-icon-left-nav mui-pull-left" onclick="selfReturn()"></span>
+    <h1 class="mui-title">我的奖励</h1>
+  </header>
+  <section class="c_body">
+    <div class="weui-form-preview reward-preview">
+      <div class="weui-form-preview__hd">
+        <label class="weui-form-preview__label fs-18">已获得奖励: <span class="text-red" id="money">&nbsp;</span></label>
+        <div class="weui-form-preview__value">
+          <a href="javascript:;" class="weui-btn weui-btn_plain-primary weui-btn_mini">提现</a>
+        </div>
+      </div>
+      <div class="weui-form-preview__bd">
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">1.奖励金满<span id="minMoney"></span>元可提现；</label>
+        </div>
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label"> 2.每个用户24小时内可提现1次；</label>
+        </div>
+        <div class="weui-form-preview__item">
+          <label class="weui-form-preview__label">3.提现金额24小时内到账。</label>
+        </div>
+      </div>
+    </div>
+    <div class="weui-cells__title">奖励金明细</div>
+    <div class="weui-cells reward-list" id="rewardList">
+      <!--<div class="weui-cell">
+        <div class="weui-cell__hd">2017-07-26 22:22:22</div>
+        <div class="weui-cell__bd">
+          <p class="cell-middle">提交申请</p>
+        </div>
+        <div class="weui-cell__ft">+8</div>
+      </div>-->
+    </div>
+  </section>
+  <script src="../../js/jquery-2.1.4.js"></script>
+  <script src="../../js/weui/jquery-weui.min.js"></script>
+  <script src="../../js/mySelf/myCommon.js"></script>
+  <script>
+  	var minMoney; 
+  	var timestampLast='';
+    $.ajax({
+      url: ctx+"/card/user/getFundList",
+      type: "post",
+      data: {uid:uid},
+      dataType: "json",
+      success: function(data){
+        console.log(data)
+        if(data.opcode==0){
+          var res=data.result;
+          var money=res.money;
+          $("#money").html("￥"+money);
+          minMoney=res.minMoney;
+          $("#minMoney").html(minMoney);
+          localStorage.minMoney=minMoney;
+          if(res.money == ''||res.money  < minMoney){
+	      	$(".weui-btn.weui-btn_mini").addClass("weui-btn_plain-disabled").removeAttr("onclick");
+	      }else if(res.userPhone==null || res.userPhone == '' ){
+	    	  $(".weui-btn.weui-btn_mini").click(function(){
+	    		  $.alert({
+	         	      title: '',
+	         	      text:"您未绑定手机号，请提交申请资料以绑定手机号！",
+	         	      onOK: function () {
+	         	      }
+	         	    });
+	          })
+	      }else{
+	          var lastGetMoneyDate=res.lastGetMoneyDate;
+	          if(lastGetMoneyDate!=null){
+	          	var stringTime=lastGetMoneyDate.split(".")[0];
+	          	timestampLast = Date.parse(new Date(stringTime))/1000;
+	          }
+	          $(".weui-btn.weui-btn_mini").click(function(){
+	         	withdrawBtn();
+	          })
+	      }
+          var list=res.list;
+          var html='';
+          var type;
+          var plusMinus;
+          for(var i in list){
+            // 1 提交申请  2 审核通过  3 激活卡片  4 推广奖励（审核）5 推广奖励（激活） 6 提现
+            console.log(list[i].type)
+            if(list[i].type==1){
+              type="提交申请";
+              plusMinus='+';
+            }else if(list[i].type==2){
+              type="审核通过";
+              plusMinus='+';
+            }else if(list[i].type==3){
+              type="激活卡片";
+              plusMinus='+';
+            }else if(list[i].type==4){
+              type="推广奖励（审核）";
+              plusMinus='+';
+            }else if(list[i].type==5){
+              type="推广奖励（激活）";
+              plusMinus='+';
+            }else if(list[i].type==6){
+              type="提现";
+              plusMinus='-';
+            }else{
+              type="异常";
+              plusMinus='';
+            }
+            html+='<div class="weui-cell">' +
+                    '<div class="weui-cell__hd">'+list[i].createTime.split(".")[0]+'</div>' +
+                    '<div class="weui-cell__bd">' +
+                      '<p class="cell-middle">'+type+'</p>' +
+                    '</div>' +
+                    '<div class="weui-cell__ft">'+plusMinus+list[i].money+'</div>' +
+                  '</div>';
+          }
+          $("#rewardList").html(html);
+         
+        }else{
+          $.toast(data.reason,"text")
+        }
+      }
+    });
+    function selfReturn(){
+      window.location.href="/view/html/index.html";
+    }
+    
+    function withdrawBtn(){
+	 	var timestampNow = Date.parse(new Date())/1000;
+     	if(timestampLast!=''){
+     		if(timestampNow-timestampLast>24*60*60*1000){
+     			getCode();
+     		}else{
+     			$.alert({
+         	      title: '',
+         	      text:"24小时内只可提现1次！",
+         	      onOK: function () {
+         	      }
+         	    });
+     		}
+     	}else{
+     		getCode();
+     	}
+    }
+    function getCode(){
+	   	$.ajax({
+	   	      url: ctx+"/card/user/getSms",
+	   	      type: "post",
+	   	      data: {uid:uid},
+	   	      dataType: "json",
+	   	      success: function(data){
+	   	        console.log(data);
+	   	        if(data.opcode==0){
+	   	          var res=data.result;
+	   	          var ticket=res.ticket;
+	   	          var phone=res.phone;
+	   	       	  window.location.href="/view/html/withdrawCode.html?ticket="+ticket+"&phone="+phone+"&"+getURLRs(window.location.href);
+	   	        }else{
+	   	          $.alert({
+	   	            title: '',
+	   	            text: data.reason,
+	   	            onOK: function () {
+	   	            }
+	   	          });
+	   	        }
+	   	      }
+	   	    });
+    }
+  </script>
+</body>
+</html>

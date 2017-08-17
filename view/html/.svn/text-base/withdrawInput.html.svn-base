@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>提现</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <link rel="stylesheet" type="text/css" href="../../css/weui.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/jquery-weui.css">
+  <link rel="stylesheet" type="text/css" href="../../css/mySelf.css">
+</head>
+<body>
+  <header class="mui-bar mui-bar-nav">
+    <span class="mui-icon mui-icon-left-nav mui-pull-left" onclick="openPage('/view/html/myReward.html')"></span>
+    <h1 class="mui-title">我的奖励</h1>
+  </header>
+  <section class="c_body">
+    <div class="weui-cells mt0">
+      <div class="weui-cell">
+        <div class="weui-cell__bd">
+          <p class="fs-18 pl5">支付宝提现</p>
+        </div>
+      </div>
+    </div>
+    <div class="mar10 pl10">可提现金额：<span id="showMoney">&nbsp;</span>元</div>
+    <div class="mar10">
+      <div class="weui-flex">
+        <div style="width:150px"><input type="number" class="weui-input input-self" placeholder="请输入提现金额" id="money"></div>
+        <div class="pl10 form-lh">元</div>
+      </div>
+    </div>
+    <div class="mar10">
+      <input type="text" class="weui-input input-self" placeholder="请输入您支付宝账户姓名" id="aliName">
+    </div>
+    <div class="mar10">
+      <input type="text" class="weui-input input-self" placeholder="请输入您提现的支付宝账号" id="aliAccount">
+    </div>
+    <div class="pad10">
+      <a href="javascript:;" class="weui-btn weui-btn_primary" onclick="submit()">提&nbsp;&nbsp;交</a>
+    </div>
+    <ul class="notice-list">
+      <li>1.奖励金满<span id="minMoney"></span>元可提现；</li>
+      <li>2.每个用户24小时内可提现1次；</li>
+      <li>3.提现金额24小时内到账。</li>
+    </ul>
+  </section>
+  <script src="../../js/jquery-2.1.4.js"></script>
+  <script src="../../js/weui/jquery-weui.min.js"></script>
+  <script src="../../js/mySelf/myCommon.js"></script>
+  <script>
+  	$("#minMoney").html(localStorage.getItem('minMoney'));
+    var ticket=GetQueryString('ticket');
+    var state=GetQueryString('state');
+    var realMoney;
+    $.ajax({
+      url: ctx+"/card/user/getUserInfo/"+uid,
+      type: "post",
+      success: function(data){
+        console.log(data);
+        if(data.opcode==0){
+          var res=data.result;
+          realMoney=res.money;
+          $("#showMoney").html(res.money);
+        }else{
+          $.toast(data.reason,"text");
+        }
+      }
+    });
+    $("#aliName").blur(function() {
+      localStorage.aliName = $("#aliName").val();
+    });
+    $("#aliAccount").blur(function() {
+      localStorage.aliAccount = $("#aliAccount").val();
+    });
+    $("#aliName").val(localStorage.getItem('aliName'));
+    $("#aliAccount").val(localStorage.getItem('aliAccount'));
+    function submit(){
+      if($("#money").val()==''){
+        $.toast("请输入提现金额!","text");
+        return false;
+      }
+      var moneyReg=/(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+      if(!moneyReg.test($("#money").val())){
+        $.toast("金额格式不正确!","text");
+        return false;
+      }
+      if($("#money").val()>realMoney){
+        $.toast("提现金额超出范围!","text");
+        return false;
+      }
+      if($("#aliName").val()==''){
+        $.toast("请输入您支付宝账户姓名!","text");
+        return false;
+      }
+      if($("#aliAccount").val()==''){
+        $.toast("请输入您提现的支付宝账号!","text");
+        return false;
+      }
+      $.ajax({
+        url: ctx+"/card/user/tixian",
+        type: "post",
+        data:{uid:uid,aliName:$("#aliName").val(),aliAccount:$("#aliAccount").val(),money:$("#money").val(),state:state,ticket:ticket},
+        success: function(data){
+          console.log(data);
+          if(data.opcode==0){
+            var res=data.result;
+            $.toast("提现成功！","text");
+            setTimeout(function(){
+                window.location.href="/view/html/myReward.html";
+            },1500)
+          }else{
+            $.toast(data.reason,"text");
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html class="page-html">
+<head>
+  <meta charset="utf-8">
+  <title>提现验证</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0">
+  <link rel="stylesheet" type="text/css" href="../../css/weui.min.css">
+  <link rel="stylesheet" type="text/css" href="../../css/jquery-weui.css">
+  <link rel="stylesheet" type="text/css" href="../../css/mySelf.css">
+</head>
+<body>
+  <header class="mui-bar mui-bar-nav">
+    <span class="mui-icon mui-icon-left-nav mui-pull-left" onclick="history.go(-1);"></span>
+    <h1 class="mui-title">我的奖励</h1>
+  </header>
+  <section class="c_body">
+    <div class="mar10 pl10" id="notice"><i class="weui-loading"></i></div>
+    <div class="mar10 pb10">
+      <input type="text" class="weui-input input-self" placeholder="请输入手机验证码" id="code">
+    </div>
+    <div class="pad10">
+      <a href="javascript:;" class="weui-btn weui-btn_primary" onclick="withdrawSubmit()">确&nbsp;&nbsp;定</a>
+    </div>
+  </section>
+  <script src="../../js/jquery-2.1.4.js"></script>
+  <script src="../../js/weui/jquery-weui.min.js"></script>
+  <script src="../../js/mySelf/myCommon.js"></script>
+  <script>
+    var ticket=GetQueryString('ticket');
+    var phone=GetQueryString('phone');
+    $("#notice").html("已发送验证码至您的手机"+phone.slice(0,3)+"****"+phone.slice(7));
+    function withdrawSubmit() {
+      if($("#code").val()==""){
+        $.toast("请输入验证码","text");
+        return false;
+      }
+      var code=$("#code").val();
+      $.ajax({
+        url: ctx+"/card/user/checkSms",
+        type: "post",
+        data: {uid:uid,code:code,ticket:ticket},
+        dataType: "json",
+        success: function(data){
+          console.log(data);
+          if(data.opcode==0){
+            var res=data.result;
+            var state=res.state;
+            window.location.href="/view/html/withdrawInput.html?state="+state+"&ticket="+ticket+"&"+getURLRs(window.location.href);
+          }else{
+            $.alert({
+              title: '',
+              text: data.reason,
+              onOK: function () {
+              }
+            });
+          }
+        }
+      });
+
+    }
+  </script>
+</body>
+</html>
